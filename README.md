@@ -1,5 +1,5 @@
 <h1 align="center" style="margin: 10px 0 10px; font-weight: bold;">Luna AI形象照</h1>
-<h3 align="center" style="margin-bottom: 10px;">一张照片免费制AI形象照，适用于简历/高管形象/证件照等场景
+<h3 align="center" style="margin-bottom: 10px;">免费AI证件照应用，仅需1张照片。适用于简历/高管形象/证件照等场景
 </h3>
 <p align="center">
 <a href="#"><img src="https://img.shields.io/badge/Vue.js-3.4-4eb883"></a>
