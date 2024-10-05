@@ -431,7 +431,7 @@ const group = ref("male");
   <div class="main">
     <h1 class="text-5xl mb-8">Luna AI形象照</h1>
     <div class="flex gap-4 h-[700px]">
-      <div class="w-[362px]">
+      <div class="w-[362px] relative">
         <div class="w-full h-[522px] relative">
           <canvas ref="canvasElement" style="display: none"></canvas>
           <img
@@ -625,6 +625,41 @@ const group = ref("male");
             :icon="Download"
             >下载图片
           </ElButton>
+        </div>
+        <div
+          class="mt-4 w-full absolute bottom-0 flex flex-col gap-2 justify-start"
+        >
+          <p class="text-sm">本项目基于LunaAI换脸实现，支持自定义服装底图</p>
+          <p class="text-sm">
+            LunaAI换脸开源项目：
+            <span>
+              <a
+                class="text-orange-300 mr-2"
+                href="https://github.com/loxi-opensource/luna-swapping"
+                target="_blank"
+                >Github</a
+              >
+              <a
+                class="text-orange-300"
+                href="https://gitee.com/loxi-open-source/luna-swapping"
+                target="_blank"
+                >Gitee码云</a
+              >
+            </span>
+          </p>
+          <p class="text-sm">
+            联系开发者：
+            <el-tooltip
+              content="<p align='center' class='mt-2'>添加微信</p><img
+                src='/assets/wechat-contact-crop.jpg'
+            alt='qrcode'
+            class='rounded w-[150px] h-[150px] m-2'
+            />"
+              raw-content
+            >
+              <span class="text-orange-300">微信</span>
+            </el-tooltip>
+          </p>
         </div>
       </div>
       <div
