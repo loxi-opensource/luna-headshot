@@ -394,7 +394,16 @@ const group = ref("male");
 
 <template>
   <div class="main">
-    <h1 class="text-5xl mb-8">Luna AI形象照</h1>
+    <h1 class="text-5xl mb-8">
+      Luna AI形象照
+      <span class="text-sm text-gray-300">
+        <a
+          href="https://github.com/loxi-opensource/luna-headshot"
+          target="_blank"
+          >🌟Github</a
+        >
+      </span>
+    </h1>
     <div class="flex gap-4 h-[700px]">
       <div class="w-[362px] relative">
         <div class="w-full h-[522px] relative">
