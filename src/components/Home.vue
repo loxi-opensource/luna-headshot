@@ -629,7 +629,7 @@ const group = ref("male");
         <div
           class="mt-4 w-full absolute bottom-0 flex flex-col gap-2 justify-start"
         >
-          <p class="text-sm">本项目基于LunaAI换脸实现，支持自定义服装底图</p>
+          <p class="text-sm">算法能力由LunaAI支持，支持自定义换装换发型</p>
           <p class="text-sm">
             LunaAI换脸开源项目：
             <span>
