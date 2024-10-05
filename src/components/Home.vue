@@ -52,33 +52,7 @@ const onClickImg = (item) => {
 const imageData = ref(null);
 const videoElement = ref(null);
 const canvasElement = ref(null);
-
 const imageBlob = ref(null);
-
-const getImageAutoReplyKey = (imageUrl) => {
-  return new Promise((resolve, reject) => {
-    axios
-      .post("https://api.easypic.iartai.com/api/wechat/setImageAutoReply", {
-        url: imageUrl,
-      })
-      .then((response) => {
-        if (response.data.code !== 1) {
-          console.error(response.data.msg);
-          reject(response.data.msg);
-          return;
-        }
-        console.log("get image auto reply key", response.data);
-        const key = response.data.data.key;
-        resolve(key);
-      })
-      .catch((error) => {
-        console.error("get image auto reply key error", error);
-        reject(error);
-      });
-  });
-};
-const resultCode = ref("123456");
-const showPopup = ref(false);
 
 const takePicture = () => {
   console.log("takePicture");
@@ -104,21 +78,12 @@ const takePicture = () => {
 const getAvatar = () => {
   console.log("get avatar");
   window.open(resultImageUrl.value);
-  // if (resultCode.value) {
-  //   return;
-  // }
-  // showPopup.value = true;
-  // return
-  // getImageAutoReplyKey(resultImageUrl.value).then((key) => {
-  //   resultCode.value = key;
-  // });
 };
 const resetState = () => {
   console.log("reset camera");
   pollTimer.value && clearInterval(pollTimer.value);
   imageData.value = null;
   state.value = "home";
-  resultCode.value = "";
 };
 const createTask = () => {
   console.log("create task");
@@ -530,27 +495,6 @@ const group = ref("male");
               </div>
             </div>
           </div>
-          <ElDialog
-            v-model="showPopup"
-            width="420px"
-            align-center
-            destroy-on-close
-            class="bg-gray-900"
-          >
-            <div
-              class="qrcode-popup flex flex-col bg-gray-900 justify-center items-center gap-2"
-            >
-              <img
-                src="https://easypic-user-file.oss-cn-shenzhen.aliyuncs.com/uploads/draw/20240319/4073a1b779fb871b7d140896d8fb8f0c.png"
-                alt="qrcode"
-                class="w-1/2 rounded"
-              />
-              <p class="mt-2 text-gray-300">关注公众号，回复数字获取</p>
-              <p class="result-code text-2xl text-orange-300 font-medium">
-                {{ resultCode }}
-              </p>
-            </div>
-          </ElDialog>
         </div>
         <div
           class="toolbar mt-4 w-full"
