@@ -103,11 +103,11 @@ const takePicture = () => {
 
 const getAvatar = () => {
   console.log("get avatar");
-  // window.open(resultImageUrl.value)
+  window.open(resultImageUrl.value);
   // if (resultCode.value) {
   //   return;
   // }
-  showPopup.value = true;
+  // showPopup.value = true;
   // return
   // getImageAutoReplyKey(resultImageUrl.value).then((key) => {
   //   resultCode.value = key;
@@ -563,7 +563,16 @@ const group = ref("male");
             <el-radio-button value="male" @click="isMale = true">
               男士形象
             </el-radio-button>
-            <el-radio-button value="portrait">AI写真照</el-radio-button>
+            <el-tooltip
+              content="<p align='center' class='mt-2'>微信扫一扫</p><img
+                src='/assets/qrcode.jpg'
+            alt='qrcode'
+            class='rounded w-[200px] h-[200px] m-2'
+            />"
+              raw-content
+            >
+              <el-radio-button value="portrait">AI写真照</el-radio-button>
+            </el-tooltip>
           </el-radio-group>
         </div>
         <div class="toolbar mt-4 w-full" v-if="isShowCapture">
@@ -580,7 +589,7 @@ const group = ref("male");
             class="w-[160px]"
             :icon="MagicStick"
             size="large"
-            >免费制作AI写真
+            >免费制作AI形象照
           </ElButton>
         </div>
         <div class="toolbar mt-4 w-full" v-if="isShowLoading">
@@ -614,7 +623,7 @@ const group = ref("male");
             size="large"
             class="w-[160px]"
             :icon="Download"
-            >获取形象照
+            >下载图片
           </ElButton>
         </div>
       </div>
