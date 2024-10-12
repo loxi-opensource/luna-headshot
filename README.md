@@ -14,8 +14,6 @@
 
 算法能力由 [Luna AI](https://github.com/loxi-opensource/luna-swapping) 强力支持
 
-
-
 ## 演示 Live Demo
 
 体验地址：[https://luna-headshot.sodair.top](https://luna-headshot.sodair.top)

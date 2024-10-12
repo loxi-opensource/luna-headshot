@@ -400,7 +400,7 @@ const group = ref("male");
         <a
           href="https://github.com/loxi-opensource/luna-headshot"
           target="_blank"
-          >🌟Github</a
+          >Github开源</a
         >
       </span>
     </h1>
@@ -582,21 +582,17 @@ const group = ref("male");
         <div
           class="mt-4 w-full absolute bottom-0 flex flex-col gap-2 justify-start"
         >
-          <p class="text-sm">算法能力由LunaAI支持，支持自定义换装换发型</p>
           <p class="text-sm">
-            LunaAI换脸开源项目：
+            本应用基于LunaSwapping构建，支持自定义换装换发型
+          </p>
+          <p class="text-sm">
+            开源的AI换脸应用解决方案：
             <span>
               <a
                 class="text-orange-300 mr-2"
                 href="https://github.com/loxi-opensource/luna-swapping"
                 target="_blank"
-                >Github</a
-              >
-              <a
-                class="text-orange-300"
-                href="https://gitee.com/loxi-open-source/luna-swapping"
-                target="_blank"
-                >Gitee码云</a
+                >LunaSwapping</a
               >
             </span>
           </p>
@@ -604,10 +600,10 @@ const group = ref("male");
             联系开发者：
             <el-tooltip
               content="<p align='center' class='mt-2'>添加微信</p><img
-                src='/assets/wechat-contact-crop.jpg'
-            alt='qrcode'
-            class='rounded w-[150px] h-[150px] m-2'
-            />"
+                          src='/assets/wechat-contact-crop.jpg'
+                      alt='qrcode'
+                      class='rounded w-[150px] h-[150px] m-2'
+                      />"
               raw-content
             >
               <span class="text-orange-300">微信</span>
