@@ -24,3 +24,8 @@ dist-ssr
 *.sw?
 dist.tar.gz
 *.tar.gz
+.yarn/*
+!.yarn/releases
+!.yarn/plugins
+.pnp.*
+
