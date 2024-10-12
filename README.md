@@ -10,9 +10,9 @@
 
 ## 简介 Introduction
 
-支持自定义换装、换发型
+本应用基于LunaSwapping构建，支持自定义换装换发型。
 
-算法能力由 [Luna AI](https://github.com/loxi-opensource/luna-swapping) 强力支持
+开源的AI换脸应用解决方案：[LunaSwapping](https://github.com/loxi-opensource/luna-swapping)
 
 ## 演示 Live Demo
 
