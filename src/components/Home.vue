@@ -177,119 +177,103 @@ const uploadFile = async function () {
   console.log("jwtToken", jwtToken);
 
   loading.value = true;
-  getS3SignUrl(jwtToken).then(() => {
-    uploadToSignUrl().then(() => {
-      console.log("上传s3成功");
+  uploadUserFile()
+    .then((response) => {
+      const success = checkResponse(response);
+      if (!success) {
+        resetState();
+        return;
+      }
+      console.log("图片上传结果", response.data);
+      const userFile = response.data.data;
+      console.log("user file", userFile);
+      const templateFaceMapping = [
+        {
+          targetFileId: selectedImg.value.fileId,
+          mapping: {
+            [selectedImg.value.faceId]: userFile.fileFaceList[0].id,
+          },
+        },
+      ];
       instance
-        .get("/api/userMessage/checkUserFilePathUpload", {
+        .post("/api/userMessage/createSwapEnhanceV3", templateFaceMapping, {
           headers: {
             JWTHEADER: jwtToken,
           },
-          params: {
-            newFileName: fileName.value,
-            isMaterialFile: 0,
-          },
         })
         .then((response) => {
-          const success = checkResponse(response);
-          if (!success) {
-            resetState();
-            return;
-          }
-          console.log("创建作图任务", response.data);
+          checkResponse(response);
+          console.log("提交换脸任务", response.data);
 
-          instance
-            .post(
-              "/api/userMessage/createSwapEnhance",
-              {
-                userFileId: response.data.data.id,
-                tagFileId: selectedImg.value.fileId,
-                gender: isMale.value ? "male" : "female",
-                fileSize: 1,
-              },
-              {
+          // 轮询任务状态
+          const taskId = response.data.data.messageId;
+          const pollTask = () => {
+            instance
+              .get("/api/userMessage/polling", {
                 headers: {
                   JWTHEADER: jwtToken,
                 },
-              },
-            )
-            .then((response) => {
-              checkResponse(response);
-              console.log("提交换脸任务", response.data);
+                params: {
+                  messageId: taskId,
+                },
+              })
+              .then((response) => {
+                // const success = checkResponse(response)
+                // console.log('轮询任务状态', response.data)
+                if (
+                  response.data.code === 0 &&
+                  response.data.message.indexOf("太频繁") > -1
+                ) {
+                  console.log("轮询不展示限流错误", response.data);
+                  return;
+                }
+                checkResponse(response);
 
-              // 轮询任务状态
-              const taskId = response.data.data.messageId;
-              const pollTask = () => {
-                instance
-                  .get("/api/userMessage/polling", {
-                    headers: {
-                      JWTHEADER: jwtToken,
-                    },
-                    params: {
-                      messageId: taskId,
-                    },
-                  })
-                  .then((response) => {
-                    // const success = checkResponse(response)
-                    // console.log('轮询任务状态', response.data)
-                    if (
-                      response.data.code === 0 &&
-                      response.data.message.indexOf("太频繁") > -1
-                    ) {
-                      console.log("轮询不展示限流错误", response.data);
-                      return;
-                    }
-                    checkResponse(response);
+                if (response.data.data.status === 1) {
+                  feedbackSuccess("生成成功");
+                  clearInterval(pollTimer.value);
+                  resultImageUrl.value = `${LUNA_OSS_BASE_URL}/${response.data.data.messageList[0].sourceFilePath}`;
+                  loading.value = false;
+                  nextState();
+                }
 
-                    if (response.data.data.status === 1) {
-                      feedbackSuccess("生成成功");
-                      clearInterval(pollTimer.value);
-                      resultImageUrl.value = `${LUNA_OSS_BASE_URL}/${response.data.data.messageList[0].sourceFilePath}`;
-                      loading.value = false;
-                      nextState();
-                    }
-
-                    if (
-                      response.data.data.status === -1 ||
-                      response.data.data.status === -2
-                    ) {
-                      // 消息状态 -1：失败 0：等待中 1：成功 -2：未找到人脸
-                      feedbackError(
-                        "生成失败请重试 " + response.data.data.status === -1
-                          ? "-1失败"
-                          : "-2未找到人脸" +
-                              " " +
-                              response.data.data.errorMsg || "-",
-                      );
-                      clearInterval(pollTimer.value);
-                      loading.value = false;
-                      nextState();
-                    }
-                  })
-                  .catch((error) => ajaxError(error));
-              };
-              pollTimer.value = setInterval(pollTask, 2000);
-            })
-            .catch((error) => ajaxError(error));
+                if (
+                  response.data.data.status === -1 ||
+                  response.data.data.status === -2
+                ) {
+                  // 消息状态 -1：失败 0：等待中 1：成功 -2：未找到人脸
+                  feedbackError(
+                    "生成失败请重试 " + response.data.data.status === -1
+                      ? "-1失败"
+                      : "-2未找到人脸" + " " + response.data.data.errorMsg ||
+                          "-",
+                  );
+                  clearInterval(pollTimer.value);
+                  loading.value = false;
+                  nextState();
+                }
+              })
+              .catch((error) => ajaxError(error));
+          };
+          pollTimer.value = setInterval(pollTask, 2000);
         })
         .catch((error) => ajaxError(error));
-    });
-  });
-};
-const uploadToSignUrl = function () {
-  let url = s3signUrl.value;
-  s3signUrl.value = "";
-  return axios
-    .put(url, imageBlob.value, {
-      headers: {
-        "Content-Type": "image/png",
-      },
-    })
-    .then((response) => {
-      console.log("URL=", url);
-      console.log("上传成功", response.data);
     })
     .catch((error) => ajaxError(error));
+};
+const uploadUserFile = async function () {
+  const jwtToken = await getAuthToken();
+  const formData = new FormData();
+  formData.append("file", imageBlob.value, "image.png");
+  return instance.post("/api/userMessage/checkUserImageUpload", formData, {
+    headers: {
+      JWTHEADER: jwtToken,
+      "Content-Type": "multipart/form-data",
+    },
+    params: {
+      isMaterialFile: 0,
+    },
+  });
 };
 
 const ajaxError = function (error) {
