@@ -435,6 +435,7 @@ const group = ref("male");
                 </el-button>
               </template>
             </el-upload>
+            <span class="text-xs text-gray-400">注意：请不要佩戴眼镜</span>
           </div>
           <video
             class="absolute top-0 left-0 w-full h-full object-cover rounded-lg"
